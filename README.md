@@ -1,20 +1,60 @@
-# Проектная работа 7 спринта
+# Проектная работа
 
-Упростите регистрацию и аутентификацию пользователей в Auth-сервисе, добавив вход через социальные сервисы. Список сервисов выбирайте исходя из целевой аудитории онлайн-кинотеатра — подумайте, какими социальными сервисами они пользуются. Например, использовать [OAuth от Github](https://docs.github.com/en/free-pro-team@latest/developers/apps/authorizing-oauth-apps){target="_blank"} — не самая удачная идея. Ваши пользователи не разработчики и вряд ли имеют аккаунт на Github. А вот добавить Twitter, Facebook, VK, Google, Yandex или Mail будет хорошей идеей.
+Ссылка на проект: https://github.com/Vatson76/Async_API_sprint_2
 
-Вам не нужно делать фронтенд в этой задаче и реализовывать собственный сервер OAuth. Нужно реализовать протокол со стороны потребителя.
+## Как запустить проект:
+Создайте env файл в той же директории, где описан его example файл
 
-Информация по OAuth у разных поставщиков данных: 
+Запустите docker-compose командой:
+```
+docker-compose up -d
+```
+Создайте миграции и соберите статику командой:
+```
+make setup
+```
+Загрузите первоначальные данные из sqlite в postgres командой. После этого сработает сервис ETL
+(Данные необходимо занести за 10 минут, иначе сервис ETL умрет (т.к. получит критическое кол-во ошибок для работы))
+на загрузку в ElasticSearch:
+```
+make load_data
+```
+Создайте суперпользователя Django:
+```
+make admin
+```
+Команда для подключения к серверу redis:
+```
+make redis
+```
+Команда для накатывания миграций в сервисе auth:
+```
+make setup_auth
+```
 
-- [Twitter](https://developer.twitter.com/en/docs/authentication/overview){target="_blank"},
-- [Facebook](https://developers.facebook.com/docs/facebook-login/){target="_blank"},
-- [VK](https://vk.com/dev/access_token){target="_blank"},
-- [Google](https://developers.google.com/identity/protocols/oauth2){target="_blank"},
-- [Yandex](https://yandex.ru/dev/oauth/?turbo=true){target="_blank"},
-- [Mail](https://api.mail.ru/docs/guides/oauth/){target="_blank"}.
+## Запуск в браузере
+- Открытие административного сайта - http://127.0.0.1:80/admin/
+- Api - http://127.0.0.1:80/api/v1/
+- Страница с документацией http://127.0.0.1:80/api/openapi
+- Путь к сервису авторизации http://127.0.0.1:80/auth
 
-## Дополнительное задание
+## Запуск тестов
+Перейдите в папку fastapi_solution/tests/functional и выполните команду docker-compose up -d
 
-Реализуйте возможность открепить аккаунт в соцсети от личного кабинета. 
 
-Решение залейте в репозиторий текущего спринта и отправьте на ревью.
+### Над проектом работали:
+
+https://github.com/Vatson76 - тимлид
+
+- Связывание сервисов
+- Трассировка
+
+https://github.com/valerycode
+
+- OAuth
+- rate limiter
+
+https://github.com/KaterinaSolovyeva (Закончила обучение)
+
+
+Все задачи перенесены в issues и закрыты
